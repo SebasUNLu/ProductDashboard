@@ -1,41 +1,71 @@
 package com.example.productDashboard.Entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
 
-import java.util.Objects;
-
-@Setter @Getter @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Table(name = "PRODUCTS")
 public class Product {
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
     private String description;
+    @Column(name = "cost")
     private Float cost;
+    @Column(name = "enabled")
     private Boolean enabled;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(cost, product.cost) && Objects.equals(enabled, product.enabled);
+    public Product(){}
+
+    public Product(Long id, String name, String description, Float cost, Boolean enabled) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
+        this.enabled = enabled;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, description, cost, enabled);
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", cost=" + cost +
-                ", enabled=" + enabled +
-                '}';
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Float getCost() {
+        return cost;
+    }
+
+    public void setCost(Float cost) {
+        this.cost = cost;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

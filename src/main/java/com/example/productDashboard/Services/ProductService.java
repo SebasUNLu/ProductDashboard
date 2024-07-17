@@ -1,51 +1,46 @@
 package com.example.productDashboard.Services;
 
 import com.example.productDashboard.Entities.Product;
+import com.example.productDashboard.Repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+// Es el Modelo, contiene toda la lógica de trabajo, para separarlo del controlador
 @Service
 public class ProductService {
-    // Es el Modelo, contiene toda la lógica de trabajo, para separarlo del controlador
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
 
     private List<Product> list = new ArrayList<>();
 
-    public Product getProduct(Integer id) {
-        for (Product product : list) {
-            if (product.getId() == id) {
-                return product;
-            }
-        }
-        return null;
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElse(null);
     }
 
     public List<Product> getProducts() {
-        return list;
+        return productRepository.findAll();
     }
 
-    public Product addProduct(Product product) {
-        list.add(product);
+    public Product createProduct(Product product) {
+        Product newProduct = productRepository.save(product);
+        return newProduct;
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    public Product updateProducts(Product updateProduct) {
+        Product product = productRepository.save(updateProduct);
         return product;
-    }
-
-    public void deleteProduct(Integer id) {
-        for (Product product : list) {
-            if (product.getId() == id) {
-                list.remove(product);
-                break;
-            }
-        }
-    }
-
-    public Product updateProducts(Integer id, Product updateProduct) {
-        for (Product product : list) {
-            if (product.getId() == id) {
-                list.remove(product);
-                list.add(updateProduct);
-            }
-        }
-        return updateProduct;
     }
 }

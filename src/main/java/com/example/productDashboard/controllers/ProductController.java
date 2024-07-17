@@ -3,6 +3,7 @@ package com.example.productDashboard.controllers;
 import com.example.productDashboard.Entities.Product;
 import com.example.productDashboard.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping("/product/{id}")
-    public Product getProduct(@PathVariable Integer id) {
+    public Product getProduct(@PathVariable Long id) {
         return service.getProduct(id);
     }
 
@@ -25,17 +26,17 @@ public class ProductController {
 
     @PostMapping("/product")
     public Product addProduct(@RequestBody Product product) {
-        return service.addProduct(product);
+        return service.createProduct(product);
     }
 
     @DeleteMapping("/product/{id}")
-    public void deleteProduct(@PathVariable Integer id) {
+    public void deleteProduct(@PathVariable Long id) {
         service.deleteProduct(id);
     }
 
-    @PutMapping("/product/{id}")
-    public Product updateProducts(@PathVariable Integer id, @RequestBody Product updateProduct) {
-        return service.updateProducts(id, updateProduct);
+    @PutMapping("/product")
+    public Product updateProducts(@RequestBody Product updateProduct) {
+        return service.updateProducts(updateProduct);
     }
 
 }
