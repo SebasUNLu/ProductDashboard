@@ -20,8 +20,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    private List<Product> list = new ArrayList<>();
-
     public Product getProduct(Long id) {
         return productRepository.findById(id).orElse(null);
     }

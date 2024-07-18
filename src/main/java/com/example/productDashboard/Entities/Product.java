@@ -4,7 +4,7 @@ package com.example.productDashboard.Entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "PRODUCTS")
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

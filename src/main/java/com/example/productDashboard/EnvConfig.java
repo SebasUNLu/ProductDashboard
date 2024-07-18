@@ -10,8 +10,6 @@ public class EnvConfig {
     public static void loadEnv(){
         try {
             List<String> lines = Files.readAllLines(Paths.get(".env"));
-            System.out.println("Env variables");
-            System.out.println(lines);
             for(String line: lines){
                 if(line.trim().isEmpty() || line.startsWith("#")){
                     continue;
