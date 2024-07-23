@@ -1,4 +1,4 @@
-package com.example.productDashboard.Services;
+package com.example.productDashboard.DTOs;
 
 public class UserDTO {
 

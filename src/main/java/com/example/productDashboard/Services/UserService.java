@@ -1,5 +1,6 @@
 package com.example.productDashboard.Services;
 
+import com.example.productDashboard.DTOs.UserDTO;
 import com.example.productDashboard.Entities.User;
 import com.example.productDashboard.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

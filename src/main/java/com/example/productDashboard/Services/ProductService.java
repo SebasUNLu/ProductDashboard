@@ -14,31 +14,31 @@ import java.util.Optional;
 public class ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepository repository;
 
-    public ProductService(ProductRepository productRepository){
-        this.productRepository = productRepository;
+    public ProductService(ProductRepository repository){
+        this.repository = repository;
     }
 
     public Product getProduct(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     public List<Product> getProducts() {
-        return productRepository.findAll();
+        return repository.findAll();
     }
 
     public Product createProduct(Product product) {
-        Product newProduct = productRepository.save(product);
+        Product newProduct = repository.save(product);
         return newProduct;
     }
 
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     public Product updateProducts(Product updateProduct) {
-        Product product = productRepository.save(updateProduct);
+        Product product = repository.save(updateProduct);
         return product;
     }
 }

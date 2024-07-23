@@ -1,7 +1,7 @@
 package com.example.productDashboard.controllers;
 
 import com.example.productDashboard.Entities.User;
-import com.example.productDashboard.Services.UserDTO;
+import com.example.productDashboard.DTOs.UserDTO;
 import com.example.productDashboard.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
