@@ -34,9 +34,9 @@ public class CategoryController {
         service.deleteCategory(id);
     }
 
-    @PutMapping("/category")
-    public CategoryDTO updateCategory(@RequestBody Category updateCategory) {
-        return service.updateCategory(updateCategory);
+    @PutMapping("/category/{category_id}")
+    public CategoryDTO updateCategory(@RequestBody Category updateCategory, @PathVariable Long category_id) {
+        return service.updateCategory(category_id, updateCategory);
     }
 
 }

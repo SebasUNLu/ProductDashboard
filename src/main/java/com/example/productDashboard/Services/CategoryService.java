@@ -46,8 +46,10 @@ public class CategoryService {
         repository.deleteById(id);
     }
 
-    public CategoryDTO updateCategory(Category updateCategory) {
-        Category category = repository.save(updateCategory);
+    public CategoryDTO updateCategory(Long category_id, Category updateCategory) {
+        Category category = repository.findById(category_id).orElse(null);
+        category.setName(updateCategory.getName());
+        repository.save(category);
         return createDTO(category);
     }
 }
