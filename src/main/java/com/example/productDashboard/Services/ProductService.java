@@ -87,4 +87,15 @@ public class ProductService {
         repository.save(product);
         return createDTO(product);
     }
+
+    // Get Product list given a SubCategory
+    public List<ProductDTO> getProdsBySubCat(Long subCat_id){
+        SubCategory subCat = scRepository.findById(subCat_id).orElseThrow();
+        List<Product> products = repository.findBySubCategory(subCat);
+        List<ProductDTO> retList = new ArrayList<>();
+        for (Product prod : products) {
+            retList.add(createDTO(prod));
+        }
+        return retList;
+    }
 }
