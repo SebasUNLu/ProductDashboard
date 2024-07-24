@@ -1,6 +1,7 @@
 package com.example.productDashboard.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,32 +20,31 @@ public class Product {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "cost")
-    private Float cost;
+    @Column(name = "price")
+    private Float price;
     @Column(name = "enabled")
     private Boolean enabled;
-
-    @Column(name = "images")
-    private List<String> images;
-
     @Column(name = "type")
     private String type;
-
     @Column(name = "promotion")
     private String promotion;
-
     @Column(name = "celiac_appropriate")
     private Boolean celiac_appropriate;
+    @Column(name = "vegetarian_appropriate")
+    private Boolean vegetarian_appropriate;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_subcategory")
     private SubCategory subCategory;
 
+    @JsonIgnore
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createdAt")
     private Date createdAt;
 
+    @JsonIgnore
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updatedAt")
@@ -53,16 +53,16 @@ public class Product {
 
     public Product(){}
 
-    public Product(Long id, String name, String description, Float cost, Boolean enabled, List<String> images, String type, String promotion, Boolean celiac_appropriate, SubCategory subCategory, Date createdAt, Date updatedAt) {
+    public Product(Long id, String name, String description, Float price, Boolean enabled, List<String> images, String type, String promotion, Boolean celiac_appropriate, Boolean vegetarian_appropriate, SubCategory subCategory, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.cost = cost;
+        this.price = price;
         this.enabled = enabled;
-        this.images = images;
         this.type = type;
         this.promotion = promotion;
         this.celiac_appropriate = celiac_appropriate;
+        this.vegetarian_appropriate = vegetarian_appropriate;
         this.subCategory = subCategory;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -92,12 +92,12 @@ public class Product {
         this.description = description;
     }
 
-    public Float getCost() {
-        return cost;
+    public Float getPrice() {
+        return price;
     }
 
-    public void setCost(Float cost) {
-        this.cost = cost;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public Boolean getEnabled() {
@@ -106,14 +106,6 @@ public class Product {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public List<String> getImages() {
-        return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
     }
 
     public String getType() {
@@ -162,5 +154,13 @@ public class Product {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Boolean getVegetarian_appropriate() {
+        return vegetarian_appropriate;
+    }
+
+    public void setVegetarian_appropriate(Boolean vegetarian_appropriate) {
+        this.vegetarian_appropriate = vegetarian_appropriate;
     }
 }

@@ -1,44 +1,76 @@
 package com.example.productDashboard.Services;
 
+import com.example.productDashboard.DTOs.ProductDTO;
 import com.example.productDashboard.Entities.Product;
+import com.example.productDashboard.Entities.SubCategory;
 import com.example.productDashboard.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-// Es el Modelo, contiene toda la lógica de trabajo, para separarlo del controlador
 @Service
 public class ProductService {
 
     @Autowired
     private ProductRepository repository;
 
-    public ProductService(ProductRepository repository){
+    public ProductService(ProductRepository repository) {
         this.repository = repository;
     }
 
-    public Product getProduct(Long id) {
-        return repository.findById(id).orElse(null);
+    private ProductDTO createDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getEnabled(),
+                product.getType(),
+                product.getPromotion(),
+                product.getCeliac_appropriate(),
+                product.getVegetarian_appropriate(),
+                product.getSubCategory()
+        );
     }
 
-    public List<Product> getProducts() {
-        return repository.findAll();
+    public ProductDTO getProduct(Long id) {
+        Product product = repository.findById(id).orElse(null);
+        return createDTO(product);
     }
 
-    public Product createProduct(Product product) {
+    public List<ProductDTO> getProducts() {
+        List<Product> prodList = repository.findAll();
+        List<ProductDTO> retList = new ArrayList<>();
+        for (Product prod : prodList) {
+            retList.add(createDTO(prod));
+        }
+        return retList;
+    }
+
+    public ProductDTO createProduct(Product product) {
         Product newProduct = repository.save(product);
-        return newProduct;
+        return createDTO(newProduct);
     }
 
     public void deleteProduct(Long id) {
         repository.deleteById(id);
     }
 
-    public Product updateProducts(Product updateProduct) {
-        Product product = repository.save(updateProduct);
-        return product;
+    public ProductDTO updateProducts(Long product_id, Product updProd) {
+        // THIS is horrible, but it's a big entity
+        Product product = repository.findById(product_id).orElse(null);
+        product.setName(updProd.getName() != null ? updProd.getName() : product.getName());
+        product.setDescription(updProd.getDescription() != null ? updProd.getDescription() : product.getDescription());
+        product.setPrice(updProd.getPrice() != null ? updProd.getPrice() : product.getPrice());
+        product.setEnabled(updProd.getEnabled() != null ? updProd.getEnabled() : product.getEnabled());
+        product.setType(updProd.getType() != null ? updProd.getType() : product.getType());
+        product.setPromotion(updProd.getPromotion() != null ? updProd.getPromotion() : product.getPromotion());
+        product.setCeliac_appropriate(updProd.getCeliac_appropriate() != null ? updProd.getCeliac_appropriate() : product.getCeliac_appropriate());
+        product.setVegetarian_appropriate(updProd.getVegetarian_appropriate() != null ? updProd.getVegetarian_appropriate() : product.getVegetarian_appropriate());
+        product.setSubCategory(updProd.getSubCategory() != null ? updProd.getSubCategory() : product.getSubCategory());
+        repository.save(product);
+        return createDTO(product);
     }
 }
