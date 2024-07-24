@@ -1,5 +1,6 @@
 package com.example.productDashboard.controllers;
 
+import com.example.productDashboard.DTOs.CategoryDTO;
 import com.example.productDashboard.DTOs.ProductDTO;
 import com.example.productDashboard.Entities.Product;
 import com.example.productDashboard.Services.ProductService;
@@ -28,6 +29,11 @@ public class ProductController {
     @PostMapping("/product")
     public ProductDTO addProduct(@RequestBody Product product) {
         return service.createProduct(product);
+    }
+
+    @PostMapping("/product/{product_id}/subCategory/{subCategory_id}")
+    public ProductDTO addSubCategoryToProduct(@PathVariable Long product_id, @PathVariable Long subCategory_id){
+        return service.addSubCatToProd(product_id,subCategory_id);
     }
 
     @DeleteMapping("/product/{id}")

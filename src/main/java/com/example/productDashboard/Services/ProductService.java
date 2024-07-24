@@ -4,6 +4,7 @@ import com.example.productDashboard.DTOs.ProductDTO;
 import com.example.productDashboard.Entities.Product;
 import com.example.productDashboard.Entities.SubCategory;
 import com.example.productDashboard.Repositories.ProductRepository;
+import com.example.productDashboard.Repositories.SubCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,12 @@ public class ProductService {
     @Autowired
     private ProductRepository repository;
 
-    public ProductService(ProductRepository repository) {
+    @Autowired
+    private SubCategoryRepository scRepository;
+
+    public ProductService(ProductRepository repository, SubCategoryRepository scRepository) {
         this.repository = repository;
+        this.scRepository = scRepository;
     }
 
     private ProductDTO createDTO(Product product) {
@@ -70,6 +75,15 @@ public class ProductService {
         product.setCeliac_appropriate(updProd.getCeliac_appropriate() != null ? updProd.getCeliac_appropriate() : product.getCeliac_appropriate());
         product.setVegetarian_appropriate(updProd.getVegetarian_appropriate() != null ? updProd.getVegetarian_appropriate() : product.getVegetarian_appropriate());
         product.setSubCategory(updProd.getSubCategory() != null ? updProd.getSubCategory() : product.getSubCategory());
+        repository.save(product);
+        return createDTO(product);
+    }
+
+    // Add a SubCategory to a Product
+    public ProductDTO addSubCatToProd(Long product_id, Long subCategory_id){
+        Product product = repository.findById(product_id).orElseThrow();
+        SubCategory subCat = scRepository.findById(subCategory_id).orElseThrow();
+        product.setSubCategory(subCat);
         repository.save(product);
         return createDTO(product);
     }

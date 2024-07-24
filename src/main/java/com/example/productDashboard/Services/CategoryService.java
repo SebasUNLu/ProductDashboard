@@ -3,6 +3,7 @@ package com.example.productDashboard.Services;
 import com.example.productDashboard.DTOs.CategoryDTO;
 import com.example.productDashboard.Entities.Category;
 import com.example.productDashboard.Repositories.CategoryRepository;
+import com.example.productDashboard.Repositories.SubCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,4 +53,7 @@ public class CategoryService {
         repository.save(category);
         return createDTO(category);
     }
+
+
+
 }
