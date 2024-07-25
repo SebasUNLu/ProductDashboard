@@ -27,6 +27,12 @@ public class ProductController {
         return service.getProdsBySubCat(subCategory_id);
     }
 
+    // Get Product list given a Category
+    @GetMapping("/product/category/{category_id}")
+    public List<ProductDTO> getProdsByCat(@PathVariable Long category_id){
+        return service.getProdsByCat(category_id);
+    }
+
     @GetMapping("/product")
     public List<ProductDTO> getProducts() {
         return service.getProducts();

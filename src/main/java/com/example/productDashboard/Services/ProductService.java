@@ -1,8 +1,10 @@
 package com.example.productDashboard.Services;
 
 import com.example.productDashboard.DTOs.ProductDTO;
+import com.example.productDashboard.Entities.Category;
 import com.example.productDashboard.Entities.Product;
 import com.example.productDashboard.Entities.SubCategory;
+import com.example.productDashboard.Repositories.CategoryRepository;
 import com.example.productDashboard.Repositories.ProductRepository;
 import com.example.productDashboard.Repositories.SubCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,14 @@ public class ProductService {
 
     @Autowired
     private ProductRepository repository;
-
+    @Autowired
+    private CategoryRepository cRepository;
     @Autowired
     private SubCategoryRepository scRepository;
 
-    public ProductService(ProductRepository repository, SubCategoryRepository scRepository) {
+    public ProductService(ProductRepository repository, CategoryRepository cRepository, SubCategoryRepository scRepository) {
         this.repository = repository;
+        this.cRepository = cRepository;
         this.scRepository = scRepository;
     }
 
@@ -80,7 +84,7 @@ public class ProductService {
     }
 
     // Add a SubCategory to a Product
-    public ProductDTO addSubCatToProd(Long product_id, Long subCategory_id){
+    public ProductDTO addSubCatToProd(Long product_id, Long subCategory_id) {
         Product product = repository.findById(product_id).orElseThrow();
         SubCategory subCat = scRepository.findById(subCategory_id).orElseThrow();
         product.setSubCategory(subCat);
@@ -89,12 +93,26 @@ public class ProductService {
     }
 
     // Get Product list given a SubCategory
-    public List<ProductDTO> getProdsBySubCat(Long subCat_id){
+    public List<ProductDTO> getProdsBySubCat(Long subCat_id) {
         SubCategory subCat = scRepository.findById(subCat_id).orElseThrow();
         List<Product> products = repository.findBySubCategory(subCat);
         List<ProductDTO> retList = new ArrayList<>();
         for (Product prod : products) {
             retList.add(createDTO(prod));
+        }
+        return retList;
+    }
+
+    // Get Products given a Category
+    public List<ProductDTO> getProdsByCat(Long cat_id) {
+        Category category = cRepository.findById(cat_id).orElseThrow();
+        List<SubCategory> scList = category.getSubCategories();
+        List<ProductDTO> retList = new ArrayList<>();
+        for (SubCategory subCat : scList) {
+            List<Product> prodList = subCat.getProducts();
+            for (Product product : prodList) {
+                retList.add(createDTO(product));
+            }
         }
         return retList;
     }
