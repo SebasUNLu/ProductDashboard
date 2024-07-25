@@ -23,18 +23,22 @@ public class ProductController {
 
     // Get Product list given a SubCategory
     @GetMapping("/product/subCategory/{subCategory_id}")
-    public List<ProductDTO> getProdsBySubCat(@PathVariable Long subCategory_id){
+    public List<ProductDTO> getProdsBySubCat(@PathVariable Long subCategory_id) {
         return service.getProdsBySubCat(subCategory_id);
     }
 
     // Get Product list given a Category
     @GetMapping("/product/category/{category_id}")
-    public List<ProductDTO> getProdsByCat(@PathVariable Long category_id){
+    public List<ProductDTO> getProdsByCat(@PathVariable Long category_id) {
         return service.getProdsByCat(category_id);
     }
 
     @GetMapping("/product")
-    public List<ProductDTO> getProducts() {
+    public List<ProductDTO> getProducts(@RequestParam(required = false) String name) {
+        if (name != null) {
+            System.out.println("Nombre encontrado: " + name);
+            return service.getProducts(name);
+        }
         return service.getProducts();
     }
 
@@ -45,8 +49,8 @@ public class ProductController {
 
     // Add a SubCategory to a Product
     @PostMapping("/product/{product_id}/subCategory/{subCategory_id}")
-    public ProductDTO addSubCategoryToProduct(@PathVariable Long product_id, @PathVariable Long subCategory_id){
-        return service.addSubCatToProd(product_id,subCategory_id);
+    public ProductDTO addSubCategoryToProduct(@PathVariable Long product_id, @PathVariable Long subCategory_id) {
+        return service.addSubCatToProd(product_id, subCategory_id);
     }
 
     @DeleteMapping("/product/{id}")

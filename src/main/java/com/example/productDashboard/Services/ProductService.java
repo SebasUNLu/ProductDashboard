@@ -7,6 +7,7 @@ import com.example.productDashboard.Entities.SubCategory;
 import com.example.productDashboard.Repositories.CategoryRepository;
 import com.example.productDashboard.Repositories.ProductRepository;
 import com.example.productDashboard.Repositories.SubCategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +46,17 @@ public class ProductService {
     }
 
     public ProductDTO getProduct(Long id) {
-        Product product = repository.findById(id).orElse(null);
+        Product product = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product " + id + " not found"));
         return createDTO(product);
+    }
+
+    public List<ProductDTO> getProducts(String name) {
+        List<Product> prodList = repository.findByNameContains(name);
+        List<ProductDTO> retList = new ArrayList<>();
+        for (Product prod : prodList) {
+            retList.add(createDTO(prod));
+        }
+        return retList;
     }
 
     public List<ProductDTO> getProducts() {
@@ -69,7 +79,7 @@ public class ProductService {
 
     public ProductDTO updateProducts(Long product_id, Product updProd) {
         // THIS is horrible, but it's a big entity
-        Product product = repository.findById(product_id).orElse(null);
+        Product product = repository.findById(product_id).orElseThrow(() -> new EntityNotFoundException("Product " + product_id + " not found"));
         product.setName(updProd.getName() != null ? updProd.getName() : product.getName());
         product.setDescription(updProd.getDescription() != null ? updProd.getDescription() : product.getDescription());
         product.setPrice(updProd.getPrice() != null ? updProd.getPrice() : product.getPrice());
@@ -85,8 +95,8 @@ public class ProductService {
 
     // Add a SubCategory to a Product
     public ProductDTO addSubCatToProd(Long product_id, Long subCategory_id) {
-        Product product = repository.findById(product_id).orElseThrow();
-        SubCategory subCat = scRepository.findById(subCategory_id).orElseThrow();
+        Product product = repository.findById(product_id).orElseThrow(() -> new EntityNotFoundException("Product " + product_id + " not found"));
+        SubCategory subCat = scRepository.findById(subCategory_id).orElseThrow(() -> new EntityNotFoundException("SubCategory " + subCategory_id + " not found"));
         product.setSubCategory(subCat);
         repository.save(product);
         return createDTO(product);
@@ -94,7 +104,7 @@ public class ProductService {
 
     // Get Product list given a SubCategory
     public List<ProductDTO> getProdsBySubCat(Long subCat_id) {
-        SubCategory subCat = scRepository.findById(subCat_id).orElseThrow();
+        SubCategory subCat = scRepository.findById(subCat_id).orElseThrow(() -> new EntityNotFoundException("SubCategory " + subCat_id + " not found"));
         List<Product> products = repository.findBySubCategory(subCat);
         List<ProductDTO> retList = new ArrayList<>();
         for (Product prod : products) {
@@ -105,7 +115,7 @@ public class ProductService {
 
     // Get Products given a Category
     public List<ProductDTO> getProdsByCat(Long cat_id) {
-        Category category = cRepository.findById(cat_id).orElseThrow();
+        Category category = cRepository.findById(cat_id).orElseThrow(() -> new EntityNotFoundException("Category " + cat_id + " not found"));
         List<SubCategory> scList = category.getSubCategories();
         List<ProductDTO> retList = new ArrayList<>();
         for (SubCategory subCat : scList) {
