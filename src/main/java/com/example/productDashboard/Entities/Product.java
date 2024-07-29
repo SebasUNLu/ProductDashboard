@@ -3,6 +3,9 @@ package com.example.productDashboard.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,20 +19,40 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull(message = "name can't be null or empty")
+    @Size(min = 2, max = 15, message = "name length must be within 2 and 15 characters")
     @Column(name = "name")
     private String name;
+
+    @NotNull(message = "description can't be null or empty")
+    @Size(min = 5, max = 30, message = "description must be within 5 and 30 characters")
     @Column(name = "description")
     private String description;
+
+    @NotNull(message = "price can't be null")
+    @Min(value = 0, message = "price can't be below 0")
     @Column(name = "price")
     private Float price;
+
+    @NotNull(message = "enabled can't be null")
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @NotNull(message = "type can't be null or empty")
+    @Size(min = 2, max = 15, message = "type must be within 2 and 15 characters")
     @Column(name = "type")
     private String type;
+
+    @NotNull(message = "promotion can't be null or empty")
+    @Size(min = 2, max = 15, message = "promotion must be within 2 and 15 characters")
     @Column(name = "promotion")
     private String promotion;
+
+    @NotNull(message = "celiac_appropriate can't be null")
     @Column(name = "celiac_appropriate")
     private Boolean celiac_appropriate;
+
+    @NotNull(message = "vegetarian_appropriate can't be null")
     @Column(name = "vegetarian_appropriate")
     private Boolean vegetarian_appropriate;
 
@@ -51,7 +74,8 @@ public class Product {
     private Date updatedAt;
 
 
-    public Product(){}
+    public Product() {
+    }
 
     public Product(Long id, String name, String description, Float price, Boolean enabled, List<String> images, String type, String promotion, Boolean celiac_appropriate, Boolean vegetarian_appropriate, SubCategory subCategory, Date createdAt, Date updatedAt) {
         this.id = id;

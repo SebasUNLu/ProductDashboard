@@ -4,6 +4,7 @@ import com.example.productDashboard.DTOs.CategoryDTO;
 import com.example.productDashboard.DTOs.ProductDTO;
 import com.example.productDashboard.Entities.Product;
 import com.example.productDashboard.Services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -11,29 +12,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService service;
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable Long id) {
         return service.getProduct(id);
     }
 
     // Get Product list given a SubCategory
-    @GetMapping("/product/subCategory/{subCategory_id}")
+    @GetMapping("/subCategory/{subCategory_id}")
     public List<ProductDTO> getProdsBySubCat(@PathVariable Long subCategory_id) {
         return service.getProdsBySubCat(subCategory_id);
     }
 
     // Get Product list given a Category
-    @GetMapping("/product/category/{category_id}")
+    @GetMapping("/category/{category_id}")
     public List<ProductDTO> getProdsByCat(@PathVariable Long category_id) {
         return service.getProdsByCat(category_id);
     }
 
-    @GetMapping("/product")
+    @GetMapping
     public List<ProductDTO> getProducts(@RequestParam(required = false) String name) {
         if (name != null) {
             System.out.println("Nombre encontrado: " + name);
@@ -42,23 +44,23 @@ public class ProductController {
         return service.getProducts();
     }
 
-    @PostMapping("/product")
-    public ProductDTO addProduct(@RequestBody Product product) {
+    @PostMapping
+    public ProductDTO addProduct(@RequestBody @Valid Product product) {
         return service.createProduct(product);
     }
 
     // Add a SubCategory to a Product
-    @PostMapping("/product/{product_id}/subCategory/{subCategory_id}")
+    @PostMapping("/{product_id}/subCategory/{subCategory_id}")
     public ProductDTO addSubCategoryToProduct(@PathVariable Long product_id, @PathVariable Long subCategory_id) {
         return service.addSubCatToProd(product_id, subCategory_id);
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         service.deleteProduct(id);
     }
 
-    @PutMapping("/product/{id}")
+    @PutMapping("/{id}")
     public ProductDTO updateProducts(@PathVariable Long id, @RequestBody Product updateProduct) {
         return service.updateProducts(id, updateProduct);
     }

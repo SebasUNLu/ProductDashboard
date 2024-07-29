@@ -2,6 +2,8 @@ package com.example.productDashboard.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +18,8 @@ public class SubCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "name can't be null or empty")
+    @Size(min = 2, max = 15, message = "name length must be within 2 and 15 characters")
     @Column(name = "name")
     private String name;
 

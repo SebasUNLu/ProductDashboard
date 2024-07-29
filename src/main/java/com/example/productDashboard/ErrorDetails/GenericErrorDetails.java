@@ -1,15 +1,18 @@
-package com.example.productDashboard;
+package com.example.productDashboard.ErrorDetails;
 
 import org.springframework.http.HttpStatus;
 
-public class ErrorDetails {
+import java.util.Map;
+
+public class GenericErrorDetails {
     private HttpStatus status;
     private String message;
     private String details;
 
-    public ErrorDetails(){}
+    public GenericErrorDetails() {
+    }
 
-    public ErrorDetails(HttpStatus status, String message, String details) {
+    public GenericErrorDetails(HttpStatus status, String message, String details) {
         this.status = status;
         this.message = message;
         this.details = details;
