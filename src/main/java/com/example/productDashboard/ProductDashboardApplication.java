@@ -1,5 +1,6 @@
 package com.example.productDashboard;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProductDashboardApplication {
 
     public static void main(String[] args) {
-        EnvConfig.loadEnv(); // Carga variables de entorno
+        Dotenv dotenv = Dotenv.load();
         SpringApplication.run(ProductDashboardApplication.class, args);
         System.out.println("Ejecutando correctamente");
     }
